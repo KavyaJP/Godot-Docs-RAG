@@ -38,15 +38,13 @@ storage_context = StorageContext.from_defaults(vector_store=vector_store)
 # It checks if the database is empty before running to save time on subsequent runs.
 if chroma_collection.count() == 0:
     print("No existing documents found in the database. Indexing...")
-    
+
     # Load your documents from the 'godot_docs' directory
     documents = SimpleDirectoryReader("./godot_docs").load_data()
-    
+
     # Create the index from the documents
     # This will take a while the first time!
-    index = VectorStoreIndex.from_documents(
-        documents, storage_context=storage_context
-    )
+    index = VectorStoreIndex.from_documents(documents, storage_context=storage_context)
     print(f"Finished indexing. {chroma_collection.count()} chunks indexed.")
 else:
     print("Found existing index. Loading from database.")
@@ -72,8 +70,8 @@ while True:
         break
 
     response = query_engine.query(prompt)
-    
+
     # Print the streaming response
     print("\nGodotBot says:")
     response.print_response_stream()
-    print("\n" + "-"*50)
+    print("\n" + "-" * 50)
